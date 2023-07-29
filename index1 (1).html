@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Social Media Site</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+}
+
+header {
+  text-align: center;
+  padding: 20px;
+  background-color: #f1f1f1;
+}
+
+main {
+  display: flex;
+  justify-content: space-between;
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.users-container,
+.messages-container,
+.tasks-container {
+  flex: 1;
+  padding: 20px;
+  background-color: #f1f1f1;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+form {
+  margin-top: 10px;
+}
+
+input[type="text"],
+select {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Social Media Site</h1>
+  </header>
+
+  <main>
+    <div class="users-container">
+      <h2>Users</h2>
+      <ul id="userList"></ul>
+    </div>
+
+    <div class="messages-container">
+      <h2>Messages</h2>
+      <ul id="messageList"></ul>
+    </div>
+
+    <div class="tasks-container">
+      <h2>Tasks</h2>
+      <ul id="taskList"></ul>
+      <form id="taskForm">
+        <input type="text" id="taskInput" placeholder="Enter task description">
+        <select id="assigneeSelect">
+          <option value="" disabled selected>Select Assignee</option>
+        </select>
+        <button type="submit">Assign Task</button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    // Sample user data
+const users = [
+  { id: 1, name: "User 1" },
+  { id: 2, name: "User 2" },
+  { id: 3, name: "User 3" }
+];
+
+// Sample messages data
+const messages = [
+  { id: 1, sender: "User 1", content: "Hello from User 1" },
+  { id: 2, sender: "User 2", content: "Greetings from User 2" },
+  { id: 3, sender: "User 3", content: "Hi there, User 3 here" }
+];
+
+// Sample tasks data
+const tasks = [
+  { id: 1, assignee: "User 1", description: "Task 1" },
+  { id: 2, assignee: "User 2", description: "Task 2" },
+  { id: 3, assignee: "User 3", description: "Task 3" }
+];
+
+// Function to populate user list
+function populateUserList() {
+  const userList = document.getElementById("userList");
+  users.forEach(user => {
+    const listItem = document.createElement("li");
+    listItem.textContent = user.name;
+    userList.appendChild(listItem);
+  });
+}
+
+// Function to populate message list
+function populateMessageList() {
+  const messageList = document.getElementById("messageList");
+  messages.forEach(message => {
+    const listItem = document.createElement("li");
+    listItem.textContent = `${message.sender}: ${message.content}`;
+    messageList.appendChild(listItem);
+  });
+}
+
+// Function to populate task list
+function populateTaskList() {
+  const taskList = document.getElementById("taskList");
+  tasks.forEach(task => {
+    const listItem = document.createElement("li");
+    listItem.textContent = `${task.assignee}: ${task.description}`;
+    taskList.appendChild(listItem);
+  });
+}
+
+// Function to populate assignee dropdown
+function populateAssigneeSelect() {
+  const assigneeSelect = document.getElementById("assigneeSelect");
+  users.forEach(user => {
+    const option = document.createElement("option");
+    option.value = user.name;
+    option.textContent = user.name;
+    assigneeSelect.appendChild(option);
+  });
+}
+
+// Function to handle task submission
+function assignTask(event) {
+  event.preventDefault();
+  const taskInput = document.getElementById("taskInput");
+  const assigneeSelect = document.getElementById("assigneeSelect");
+
+  const newTask = {
+    id: tasks.length + 1,
+    assignee: assigneeSelect.value,
+    description: taskInput.value
+  };
+
+  tasks.push(newTask);
+  const taskList = document.getElementById("taskList");
+  const listItem = document.createElement("li");
+  listItem.textContent = `${newTask.assignee}: ${newTask.description}`;
+  taskList.appendChild(listItem);
+
+  taskInput.value = "";
+  assigneeSelect.selectedIndex = 0;
+}
+
+// Populate user list, message list, and task list
+populateUserList();
+populateMessageList();
+populateTaskList();
+populateAssigneeSelect();
+
+// Add event listener to task form
+const taskForm = document.getElementById("taskForm");
+taskForm.addEventListener("submit", assignTask);
+
+  </script>
+</body>
+</html>
